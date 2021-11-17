@@ -11,13 +11,14 @@ abstract contract Yeet is Ownable {
     bool public stopped = false;
 
     uint256 public goodwill;
-    mapping(address => bool) public approvedTargets;
+    address public treasury;
 
     address internal constant ETHAddress =
     0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
-    constructor(uint256 _goodwill) {
+    constructor(uint256 _goodwill, address _treasury) {
         goodwill = _goodwill;
+        treasury = _treasury;
     }
 
     // circuit breaker modifiers
@@ -63,7 +64,7 @@ abstract contract Yeet is Ownable {
         stopped = !stopped;
     }
 
-    function set_new_goodwill(uint256 _new_goodwill) public onlyOwner {
+    function setNewGoodwill(uint256 _new_goodwill) public onlyOwner {
         require(
             _new_goodwill >= 0 && _new_goodwill <= 100,
             "GoodWill Value not allowed"
@@ -71,9 +72,10 @@ abstract contract Yeet is Ownable {
         goodwill = _new_goodwill;
     }
 
+    function setNewTreasury(address _new_treasury) public onlyOwner {
+        treasury = _new_treasury;
+    }
 
-
-    ///@notice Withdraw goodwill share, retaining affilliate share
     function withdrawTokens(address[] calldata tokens) external onlyOwner {
         for (uint256 i = 0; i < tokens.length; i++) {
             uint256 qty;
@@ -82,21 +84,9 @@ abstract contract Yeet is Ownable {
                 qty = address(this).balance;
                 Address.sendValue(payable(owner()), qty);
             } else {
-                qty =
-                IERC20(tokens[i]).balanceOf(address(this));
+                qty = IERC20(tokens[i]).balanceOf(address(this));
                 IERC20(tokens[i]).safeTransfer(owner(), qty);
             }
-        }
-    }
-
-    function setApprovedTargets(
-        address[] calldata targets,
-        bool[] calldata isApproved
-    ) external onlyOwner {
-        require(targets.length == isApproved.length, "Invalid Input length");
-
-        for (uint256 i = 0; i < targets.length; i++) {
-            approvedTargets[targets[i]] = isApproved[i];
         }
     }
 
