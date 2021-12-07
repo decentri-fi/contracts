@@ -6,7 +6,7 @@ import "@openzeppelin/hardhat-upgrades";
 
 import {HardhatUserConfig} from "hardhat/src/types/config";
 import {HardhatUserConfig as WithEtherscanConfig} from "hardhat/config";
-import {buildHardhatNetworkAccounts, getPKs} from "./utils/configInit";
+import {buildHardhatNetworkAccounts, getPKs} from "../utils/configInit";
 
 type DeploymentConfig = HardhatUserConfig & WithEtherscanConfig;
 
