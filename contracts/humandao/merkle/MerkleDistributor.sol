@@ -32,7 +32,7 @@ contract MerkleDistributor is IMerkleDistributor,  Pausable, Ownable {
         claimedBitMap[claimedWordIndex] = claimedBitMap[claimedWordIndex] | (1 << claimedBitIndex);
     }
 
-    function claim(uint256 index, address account, uint256 amount, bytes32[] calldata merkleProof) external override {
+    function doClaim(uint256 index, address account, uint256 amount, bytes32[] calldata merkleProof) internal override {
         require(!isClaimed(index), 'MerkleDistributor: Drop already claimed.');
 
         // Verify the merkle proof.
