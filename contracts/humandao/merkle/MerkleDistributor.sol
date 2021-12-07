@@ -1,9 +1,10 @@
 import "./IMerkleDistributor.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
-
-contract MerkleDistributor is IMerkleDistributor {
+contract MerkleDistributor is IMerkleDistributor,  Pausable, Ownable {
 
     address public immutable override token;
     bytes32 public immutable override merkleRoot;
